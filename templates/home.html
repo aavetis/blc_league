@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+{{title}}
+
+{% endblock %}
+
+{% block content %} 
+
+
+
+<br>
+<table class="">
+	{% for team in teams %}
+	<tr><h3>{{team.name}}</h3></tr>
+	<hr>
+		{% for t in team.members.all %}
+			<a href='{% url 'user' t.user.id %}'> {{ t.user }}</a>
+			{{ t.user.id }}
+			<br>
+		
+		{% endfor %}
+	{% endfor %}
+	
+
+
+</table>
+
+{% endblock %}	

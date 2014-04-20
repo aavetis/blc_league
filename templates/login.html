@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+{% if request.user.username %}
+	<h1> you are already logged </h1>
+	{% endif %}
+
+	<h1> {{ user.username }} </h1>
+
+    {% if user.username %}
+    {{ user.username }}
+    {% endif %}
+
+	{% if not user.is_authenticated %}
+
+	<form action='/accounts/auth/' method='post'>{% csrf_token %}
+	<label for="username">Username: </label>
+	<input type="text" name="username" value="" id="username">
+
+	<label for="password">Password: </label>
+	<input type="password" name="password" value="" id="password">
+
+	<input type="submit" value="Login" />
+
+	</form>
+
+	{% endif %}
+
+{% endblock %}

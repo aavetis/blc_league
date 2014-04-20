@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+<h2>Make Team</h2>
+
+<form action="/team/make_team/" method="POST">{% csrf_token %}
+
+{{ form.as_ul }}
+<input type='submit' value="Make Team" />
+
+</form>
+
+
+{% endblock %}

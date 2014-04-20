@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>goBLC| {%block title %} {% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      @media (min-width: 768px){
+        /* pull navbar right on large screens */
+        .navbar-default .navbar-collapse, .navbar-default .navbar-form{
+          float:right !important
+        }
+      }
+
+    </style>
+
+  </head>
+
+  <body style="padding-top:50px;">
+   
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          
+          <a class="navbar-brand" href="/">goBLC</a>
+
+        </div>
+        <div class="navbar-collapse collapse" >
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    
+
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+    
+    {% if not user.is_authenticated %}
+        <a href='/accounts/register/'>Register</a>
+        <br>
+        <a href='/accounts/login/'>Login</a>
+    {% endif %}
+
+    {% if  user.is_authenticated %}
+        <p>Logged in as <a href='{% url 'user' user.id %}'>{{ user.username }}.</a> </p>
+        <p><a href='/user/edit/'>Edit</a></p>
+        {% if not user.player.is_on_team %}
+        <a href='/team/join_team/'>Join</a> or
+        <a href='/team/make_team'>Make</a> a team.
+        <br>
+        {% endif %}
+        <a href='/accounts/logout/'>Logout</a>
+    {% endif %}
+    
+    </div>
+    </div>
+    <div class="container">
+    {% block content %}
+
+
+
+    {% endblock %}
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

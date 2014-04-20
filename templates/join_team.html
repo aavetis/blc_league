@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ user.username }} </h1>
+
+<form action='/team/join_team/' method='post'>{% csrf_token %}
+<ul> {{ form.as_ul }}
+</ul>
+
+<input type='text' name='pw' id='pw' />
+
+<input type='submit' name='submit' value='Submit' />
+
+</form>
+
+
+{% endblock %}
