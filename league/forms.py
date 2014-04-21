@@ -11,25 +11,11 @@ class AccountForm(forms.ModelForm):
 		fields = {'username','password',}
 				
 
-"""
-class TeamForm(forms.ModelForm):
-	class Meta:
-		model = Squad
-		fields = { 'team' }
-"""
 class TeamForm(forms.ModelForm):
 	class Meta:
 		model = Squad
 		fields = { 'team',  }
 
-
-	"""
-	def save(self, user, *args, **kwargs):
-		self.
-		self.instance.user = user
-		post = super(TeamForm, self).save(*args, **kwargs)
-		post.save()
-	"""
 
 class MakeTeamForm(forms.ModelForm):
 	class Meta:

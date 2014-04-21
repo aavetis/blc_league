@@ -23,13 +23,13 @@ urlpatterns = patterns('',
     url(r'^accounts/register/$', 'dja.views.register_user'),
     url(r'^accounts/register_success/$', 'dja.views.register_success'),
 
-
-    #url(r'^team/$', include('league.urls')),
-    url(r'^team/join_team/$', 'league.views.join_team'),
     url(r'^user/(?P<u_id>[0-9]+)/$', 'league.views.user', name='user'),
+    url(r'^user/edit/$', 'league.views.edit_profile'),
 
     url(r'^team/make_team/$', 'league.views.make_team'),
-    url(r'^user/edit/$', 'league.views.edit_profile'),
+    url(r'^team/join_team/$', 'league.views.join_team'),
+    url(r'^team/(?P<t_id>[0-9]+)/$', 'league.views.team_page', name='team_page'),
+    
 
     url(r'^admin/', include(admin.site.urls)),
 )

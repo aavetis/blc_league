@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, get_object_or_404
 
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
@@ -12,16 +12,6 @@ from django.contrib import auth
 from django.http import HttpResponseRedirect
 
 from forms import *
-
-def st(request, context):
-    if request.user.is_authenticated():
-        context = context
-        p = Player.objects.get(user=request.user)
-        if p:
-            context['p'] = p
-    
-    return context
-
 
 
 def home(request):
@@ -41,10 +31,7 @@ def home(request):
         if p:
             context['p'] = p
 
-
     return render(request, 'home.html', context)
-
-
 
 
 def join_team(request):
@@ -54,14 +41,12 @@ def join_team(request):
         if Squad.objects.filter(player=pl):
             return HttpResponseRedirect('/')
 
-       
         if request.POST:
             form = TeamForm(request.POST)
             if form.is_valid():
                 u = request.user
                 uid = u.id
                 
-
                 password = request.POST['pw']
                 f = form.save(commit=False)
                 f.player = pl
@@ -83,6 +68,7 @@ def join_team(request):
     else:
          return HttpResponseRedirect('/accounts/login/')
 
+
 def make_team(request):
     if request.user.is_authenticated():
         pl = Player.objects.get(user=request.user)
@@ -102,6 +88,17 @@ def make_team(request):
     else:
         return HttpResponseRedirect('/accounts/login/')
 
+
+def team_page(request, t_id):
+    team = get_object_or_404(Team, id=t_id)
+    members = team.members
+    context = {
+        'team' : team,
+        'members' : members
+    }
+
+    return render(request, 'team.html', context )
+
 def user(request, u_id):
     u = User.objects.get(id=u_id)
     pl = Player.objects.get(id=u_id)
@@ -110,10 +107,6 @@ def user(request, u_id):
     'u' : u
     }
     s = Squad.objects.get(player=pl)
-    
-    #st(request, context)
-
-    
 
     if s:
         context['team'] = s.team
@@ -124,18 +117,20 @@ def user(request, u_id):
 def edit_profile(request):
     if request.user.is_authenticated():
         user = request.user
-        player = user.player
+        pl = Player.objects.get(user=request.user)
 
-        form = EditProfileForm(instance=player)
-        if request.method == "POST":
+        if request.POST:
+            form = EditProfileForm(request.POST, instance=pl)
             if form.is_valid():
-                form.save
+                form.save()
                 return HttpResponseRedirect('/')
         else:
-            return render(request,'edit.html', {'form' : form})
-        
-        return HttpResponseRedirect('/')
+            form = EditProfileForm(instance=pl)
+        args = {}
+        args.update(csrf(request))
+        args['form'] = form
+    
+        return render(request, 'edit.html', args)
     else:
         return HttpResponseRedirect('/accounts/login/')
-
-
+    

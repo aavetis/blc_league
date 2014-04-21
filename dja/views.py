@@ -36,7 +36,7 @@ def loggedin(request):
 
 def invalid_login(request):
 	if not request.user.is_authenticated():
-		return render_to_response('invalid_login.html')
+		return render(request, 'invalid_login.html')
 	else:
 		return HttpResponseRedirect('/')		
 
@@ -58,7 +58,7 @@ def register_user(request):
 
 	args['form'] = UserCreationForm()
 	#args['form'] = AccountForm()
-	return render_to_response('register.html', args)
+	return render(request, 'register.html', args)
 
 def register_success(request):
-	return render_to_response('register_success.html')
+	return render(request, 'register_success.html')

@@ -13,7 +13,7 @@
 <br>
 <table class="">
 	{% for team in teams %}
-	<tr><h3>{{team.name}}</h3></tr>
+	<tr><h3><a href="{% url 'team_page' team.id %}">{{team.name}}</a></h3></tr>
 	<hr>
 		{% for t in team.members.all %}
 			<a href='{% url 'user' t.user.id %}'> {{ t.user }}</a>
