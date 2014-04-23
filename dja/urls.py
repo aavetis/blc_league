@@ -29,7 +29,8 @@ urlpatterns = patterns('',
     url(r'^team/make_team/$', 'league.views.make_team'),
     url(r'^team/join_team/$', 'league.views.join_team'),
     url(r'^team/(?P<t_id>[0-9]+)/$', 'league.views.team_page', name='team_page'),
-    
+    url(r'^team/leave_team/$', 'league.views.leave_team'),
+
 
     url(r'^admin/', include(admin.site.urls)),
 )

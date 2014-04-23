@@ -6,9 +6,19 @@
 
 {% block content %}
 
-<h2> {{ t.name }} </h2>
+<h2> {{ team.name }} </h2>
 
-<p> {{ t.bio }} </p>
+<p> {{ team.bio }} </p>
 
+<div class='row'>
+<div class="col-lg-2 col-lg-offset-10" style="background:#cecece; ">
+{% for p in team.listPlayers %}
+
+
+<p> <a href="{% url 'user' p.player.user.id %}">{{ p.player.user.username }} </a>  </p>
+
+{% endfor %}
+</div>
+</div>
 
 {% endblock %}

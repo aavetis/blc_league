@@ -7,8 +7,10 @@
 <h2>Edit Profile</h2>
 
 <form action="/user/edit/" method="POST">{% csrf_token %}
+<table class="table">
+{{ form.as_table}}
+</table>
 
-{{ form.as_p }}
 <input type='submit' value="Submit Edits" />
 
 </form>

@@ -43,18 +43,37 @@
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              {% if  user.is_authenticated %}
+              <b>{{ user.username }}</b>
+              {% else %}
+              Account
+              {% endif %}
+              <b class="caret"></b></a>
                 <ul class="dropdown-menu">
 
 
                   {% if  user.is_authenticated %}
                   <li><a href="{% url 'user' user.id %}">View Profile</a></li>
                   <li><a href="/user/edit/">Edit Profile</a></li>
+                  <li><a href='/accounts/logout/'>Logout</a></li>
                   {% endif %}
 
                   {% if not user.is_authenticated %}
                   <li><a href='/accounts/login/'>Login</a></li>
                   <li><a href='/accounts/register/'>Register</a></li>
+                  {% endif %}
+
+                  {% if not user.player.is_on_team %}
+                  <li class="divider"></li>
+                  <li><a href='/team/join_team/'>Join team</a></li>
+                  <li><a href='/team/make_team'>Make team</a></li>
+
+
+                  {% elif user.player.is_on_team %}
+                  <li class="divider"></li>
+                  <li><a href="{% url 'team_page' user.player.on_team.id %}">{{ user.player.on_team.name }}</a></li>
+                  <li><a href="/team/leave_team/">Leave team</a></li>
                   {% endif %}
 
                 </ul>
@@ -68,7 +87,7 @@
     
     
 
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
+<!--     <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container">
     
     {% if not user.is_authenticated %}
@@ -89,16 +108,24 @@
     {% endif %}
     
     </div>
+    </div> -->
+    <div class="container"> <!-- main contain -->
+
+    <div class="col-lg-2">
+    sidebar
     </div>
-    <div class="container">
+
+    <div class="col-lg-6 col-lg-offset-1">
+    
     {% block content %}
 
 
 
     {% endblock %}
     </div>
+    
 
-
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   </body>

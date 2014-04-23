@@ -12,7 +12,7 @@ def login(request):
 	if not request.user.is_authenticated():
 		c = {}
 		c.update(csrf(request))
-		return render_to_response('login.html', c)
+		return render(request, 'login.html', c)
 	else:
 		return HttpResponseRedirect('/')
 

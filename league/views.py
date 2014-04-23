@@ -46,6 +46,7 @@ def join_team(request):
             if form.is_valid():
                 u = request.user
                 uid = u.id
+                team =Team.objects.get(id=request.POST['team'])
                 
                 password = request.POST['pw']
                 f = form.save(commit=False)
@@ -53,10 +54,14 @@ def join_team(request):
 
                 if password == Team.objects.get(id=request.POST['team']).password:
                     f.save()
+                    team.checkPlayers()
+                    #team.save
                 else:
                     return HttpResponseRedirect('/')                    
                 
-                return HttpResponseRedirect('/')
+
+
+                return HttpResponseRedirect('/user/'+str(request.user.id))
         else:
             form = TeamForm()
         args = {}
@@ -83,7 +88,8 @@ def make_team(request):
         args = {}
         args.update(csrf(request))
         args['form'] = form
-    
+
+
         return render(request, 'make_team.html', args)
     else:
         return HttpResponseRedirect('/accounts/login/')
@@ -106,11 +112,15 @@ def user(request, u_id):
     context = {
     'u' : u
     }
-    s = Squad.objects.get(player=pl)
-
+    
+    #check if player has squad
+    try:
+        s = Squad.objects.get(player=pl)
+    except Squad.DoesNotExist:
+        s = None
     if s:
         context['team'] = s.team
-    
+
     return render(request, 'profile.html', context )
 
 
@@ -133,4 +143,31 @@ def edit_profile(request):
         return render(request, 'edit.html', args)
     else:
         return HttpResponseRedirect('/accounts/login/')
+
+
+def leave_team(request):
+    if request.user.is_authenticated():
+        user = request.user
+        pl = Player.objects.get(user=request.user)
+        
+        squad = get_object_or_404(Squad, player=pl)
+        team = squad.team
+
+        if request.POST:
+            form = LeaveTeamForm(request.POST, instance=squad)
+            if form.is_valid():
+                squad.delete()
+                team.checkPlayers()
+                return HttpResponseRedirect('/')
+        else:
+            form = LeaveTeamForm(instance=squad)
+        args = {}
+        args.update(csrf(request))
+        args['form'] = form
     
+        return render(request, 'leave_team.html', args)
+    else:
+        return HttpResponseRedirect('/')
+
+
+

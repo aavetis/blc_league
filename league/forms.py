@@ -27,3 +27,9 @@ class EditProfileForm(forms.ModelForm):
 	class Meta:
 		model = Player
 		exclude = ('user',)
+
+class LeaveTeamForm(forms.ModelForm):
+	class Meta:
+		model = Squad
+		fields = ()
+

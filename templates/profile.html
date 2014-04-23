@@ -8,7 +8,11 @@
 
 <h2> {{ u.username }} </h2>
 {% if team %}
-<h4> {{team}} </h4>
+<h4> <a href=" {% url 'team_page' team.id %} "> {{team}} </a></h4>
+	{% if user.username == u.username %}
+	<a class="small" href='/team/leave_team/'>Leave team</a>
+	{% endif %}
+
 {% endif %}
 
 <h3> {{ u.player }} </h3>
