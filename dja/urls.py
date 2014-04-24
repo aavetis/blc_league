@@ -29,6 +29,7 @@ urlpatterns = patterns('',
     url(r'^accounts/register_success/$', 'dja.views.register_success'),
 
     url(r'^user/(?P<u_id>[0-9]+)/$', 'league.views.user', name='user'),
+    
     url(r'^user/edit/$', 'league.views.edit_profile'),
 
     url(r'^team/make_team/$', 'league.views.make_team'),

@@ -6,7 +6,7 @@
 <hr>
 <small class="pull-right">
 
-Posted by <a href="{% url 'user' user.id%}">{{ post.posted_by }}</a> on {{ post.date_posted }}.
+Posted by <a href="{% url 'user' post.posted_by.id %}">{{ post.posted_by }}</a> on {{ post.date_posted }}.
 </small>
 <br>
 
