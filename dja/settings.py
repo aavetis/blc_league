@@ -47,6 +47,7 @@ INSTALLED_APPS = (
 
     'league',
     'south',
+    'news',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -89,10 +90,26 @@ USE_TZ = True
 AUTH_PROFILE_MODULE = 'league.Player'
 
 
+TEMPLATE_CONTEXT_PROCESSORS =  (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+
+    'news.context_processors.news_content',
+)
+
+
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
+#STATIC_URL = [os.path.join(BASE_DIR, 'static')]
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
+
+

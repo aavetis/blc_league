@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3><b>{{ post.title }}</b></h3>
+<hr>
+<small class="pull-right">
+<!-- Posted on {{ post.date_posted }} by <a href="{% url 'user' user.id%}">{{ post.posted_by }}</a> -->
+Posted by <a href="{% url 'user' user.id%}">{{ post.posted_by }}</a> on {{ post.date_posted }}.
+</small>
+<br>
+
+{{ post.content }}
+
+
+{% endblock %}

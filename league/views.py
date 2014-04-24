@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 
 from django.contrib import auth
 from django.http import HttpResponseRedirect
+from django.template import RequestContext
+
 
 from forms import *
 
@@ -31,7 +33,8 @@ def home(request):
         if p:
             context['p'] = p
 
-    return render(request, 'home.html', context)
+    #return render(request, 'home.html', context)
+    return render(request, 'home.html', context, context_instance=RequestContext(request))
 
 
 def join_team(request):
@@ -96,7 +99,23 @@ def make_team(request):
 
 
 def team_page(request, t_id):
-    team = get_object_or_404(Team, id=t_id)
+    """
+    try:
+        team = get_object_or_404(Team, name=t_id)
+        #team= Team.objects.get(name=t_id)
+    except Team.DoesNotExist:
+        team = get_object_or_404(Team, id=t_id)        
+    """
+
+    try:
+        if Team.objects.get(name__iexact=t_id):
+            team = Team.objects.get(name__iexact=t_id)
+        elif Team.objects.get(id=t_id):
+            team = Team.objects.get(id=t_id)
+
+    except Team.DoesNotExist:
+        team = get_object_or_404(Team, id=t_id)
+
     members = team.members
     context = {
         'team' : team,

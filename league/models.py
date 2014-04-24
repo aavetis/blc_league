@@ -68,3 +68,5 @@ class Squad(models.Model):
     
     def __unicode__(self):
     	return "%s : %s " %(self.team.name, self.player.user.username)
+
+

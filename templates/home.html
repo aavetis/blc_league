@@ -10,7 +10,7 @@
 
 
 
-<br>
+
 <table class="">
 	{% for team in teams %}
 	<tr><h3><a href="{% url 'team_page' team.id %}">{{team.name}}</a></h3> Team active : {{team.is_active}}</tr>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+<h2>Make Post</h2>
+
+<form action="/news/make_post/" method="POST">{% csrf_token %}
+<table class="table">
+{{ form.as_table }}
+</table>
+<input type='submit' value="Make Post" />
+
+</form>
+
+
+{% endblock %}

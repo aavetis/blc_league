@@ -12,6 +12,8 @@
     <!-- Bootstrap core CSS -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
       @media (min-width: 768px){
         /* pull navbar right on large screens */
@@ -69,11 +71,17 @@
                   <li><a href='/team/join_team/'>Join team</a></li>
                   <li><a href='/team/make_team'>Make team</a></li>
 
-
                   {% elif user.player.is_on_team %}
                   <li class="divider"></li>
                   <li><a href="{% url 'team_page' user.player.on_team.id %}">{{ user.player.on_team.name }}</a></li>
-                  <li><a href="/team/leave_team/">Leave team</a></li>
+                  <li><a href='{% url 'leave_team' %}'>Leave team</a></li>
+
+                    {% if perms.news.add_newspost %}
+                      <li class="divider"></li>
+
+                      <li><a href="{% url 'make_post' %}"><b class="danger">NEWS POST</b></a></li>
+                    {% endif %}
+
                   {% endif %}
 
                 </ul>
@@ -110,12 +118,38 @@
     </div>
     </div> -->
     <div class="container"> <!-- main contain -->
+    <br><br>
+    <div class="col-lg-3" >
+    
+    <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+          <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion" href="#forumlist">
+            <h5 style="margin:.5%;">Forums</h5></a></div>
 
-    <div class="col-lg-2">
-    sidebar
+            <div id="forumlist" class="panel-collapse collapse">
+      <div class="panel-body">
+        <ul class="list-unstyled">
+        {% for post in newspost %}
+            <li> <a href='{% url 'post' post.id %}'>{{ post.title|truncatechars:33 }}</a></li>
+        {% endfor %}
+          <li><a href="">Link</a></li>
+          <li><a href="">Link</a></li>
+          <li><a href="">Link</a></li>
+        </ul>
+
+
+      </div>
+    </div>
     </div>
 
-    <div class="col-lg-6 col-lg-offset-1">
+
+    </div>
+
+
+    </div>
+
+    <div class="col-lg-7 col-lg-offset-0">
     
     {% block content %}
 
@@ -128,5 +162,8 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <script src='/Users/albert/fnmleague/dja/bs/js/bootstrap.min.js'></script>
+
   </body>
 </html>
