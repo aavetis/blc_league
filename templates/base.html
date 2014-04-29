@@ -57,28 +57,27 @@
 
                   {% if  user.is_authenticated %}
                   <li><a href="{% url 'user' user.id %}">View Profile</a></li>
-                  <li><a href="/user/edit/">Edit Profile</a></li>
-                  <li><a href='/accounts/logout/'>Logout</a></li>
+                  <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
+                  <li><a href='{% url 'logout' %}'>Logout</a></li>
                   {% endif %}
 
                   {% if not user.is_authenticated %}
-                  <li><a href='/accounts/login/'>Login</a></li>
-                  <li><a href='/accounts/register/'>Register</a></li>
+                  <li><a href='{% url 'login' %}'>Login</a></li>
+                  <li><a href='{% url 'register' %}'>Register</a></li>
                   {% endif %}
 
                   {% if not user.player.is_on_team %}
                   <li class="divider"></li>
-                  <li><a href='/team/join_team/'>Join team</a></li>
-                  <li><a href='/team/make_team'>Make team</a></li>
+                  <li><a href='{% url 'join_team' %}'>Join team</a></li>
+                  <li><a href='{% url 'make_team' %}'>Make team</a></li>
 
                   {% elif user.player.is_on_team %}
                   <li class="divider"></li>
                   <li><a href="{% url 'team_page' user.player.on_team.id %}">{{ user.player.on_team.name }}</a></li>
                   <li><a href='{% url 'leave_team' %}'>Leave team</a></li>
 
-                    {% if perms.news.add_newspost %}
+                    {% if perms.news %}
                       <li class="divider"></li>
-
                       <li><a href="{% url 'make_post' %}"><b class="danger">NEWS POST</b></a></li>
                     {% endif %}
 
@@ -119,41 +118,52 @@
     </div> -->
     <div class="container"> <!-- main contain -->
     <br><br>
-    <div class="col-lg-3" >
-    
-    <div class="panel-group" id="accordion">
-    <div class="panel panel-default">
-          <div class="panel-heading">
-            <a data-toggle="collapse" data-parent="#accordion" href="#forumlist">
-            <h5 style="margin:.5%;">Forums</h5></a></div>
-
-            <div id="forumlist" class="panel-collapse collapse">
-      <div class="panel-body">
-        <ul class="list-unstyled">
-        {% for post in newspost %}
-            <li> <a href='{% url 'post' post.id %}'>{{ post.title|truncatechars:33 }}</a></li>
-        {% endfor %}
-          <li><a href="">Link</a></li>
-          <li><a href="">Link</a></li>
-          <li><a href="">Link</a></li>
-        </ul>
 
 
+    <div class="col-lg-3 col-md-3" >
+        <div class="panel-group" id="accordion">
+      <div class="panel panel-default">
+
+      <div class="panel-heading">
+      <a data-toggle="collapse" data-parent="#accordion" href="#season">
+      <h5 style="margin:.5%;">Season</h5></a></div>
+            <div id="season" class="panel-collapse collapse in">
+        <div class="panel-body small">
+          <ul class="list-unstyled">
+            <li><a href="{% url 'season_page' season.id %}">Season {{season.id}}</a></li>
+            <li><a href="">Link</a></li>
+          </ul>
+        </div>
+      </div>
+
+
+
+
+
+            <div class="panel-heading">
+              <a data-toggle="collapse" data-parent="#accordion" href="#forumlist">
+              <h5 style="margin:.5%;">Forums</h5></a></div>
+
+              <div id="forumlist" class="panel-collapse collapse in">
+                <div class="panel-body small">
+                  <ul class="list-unstyled">
+                  {% for post in newspost %}
+                      <li><span class="glyphicon glyphicon-exclamation-sign" style="color:red;"></span> <a href="{% url 'post' post.id %}">{{ post.title|truncatechars:35 }}</a></li>
+                  {% endfor %}
+                    <li><a href="">Link</a></li>
+                    <li><a href="">Link</a></li>
+                    <li><a href="">Link</a></li>
+                  </ul>
+                </div>
+              </div>
       </div>
     </div>
-    </div>
 
 
     </div>
 
-
-    </div>
-
-    <div class="col-lg-7 col-lg-offset-0">
-    
+    <div class="col-lg-9 col-md-9 ">    
     {% block content %}
-
-
 
     {% endblock %}
     </div>

@@ -72,7 +72,7 @@ def join_team(request):
 
         args['form'] = form
 
-        return render(request, 'join_team.html', args)
+        return render(request, 'join_team.html', args, context_instance=RequestContext(request))
     else:
          return HttpResponseRedirect('/accounts/login/')
 
@@ -93,7 +93,7 @@ def make_team(request):
         args['form'] = form
 
 
-        return render(request, 'make_team.html', args)
+        return render(request, 'make_team.html', args, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/accounts/login/')
 
@@ -122,7 +122,7 @@ def team_page(request, t_id):
         'members' : members
     }
 
-    return render(request, 'team.html', context )
+    return render(request, 'team.html', context, context_instance=RequestContext(request) )
 
 def user(request, u_id):
     u = User.objects.get(id=u_id)
@@ -140,7 +140,7 @@ def user(request, u_id):
     if s:
         context['team'] = s.team
 
-    return render(request, 'profile.html', context )
+    return render(request, 'profile.html', context, context_instance=RequestContext(request) )
 
 
 def edit_profile(request):
@@ -159,7 +159,7 @@ def edit_profile(request):
         args.update(csrf(request))
         args['form'] = form
     
-        return render(request, 'edit.html', args)
+        return render(request, 'edit.html', args, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/accounts/login/')
 
@@ -184,9 +184,16 @@ def leave_team(request):
         args.update(csrf(request))
         args['form'] = form
     
-        return render(request, 'leave_team.html', args)
+        return render(request, 'leave_team.html', args, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/')
 
+def season_page(request, s_id):
+    season = get_object_or_404(Season, id=s_id)
+    context = {
+        'season' : season
+    }
+
+    return render(request, 'season.html', context, context_instance=RequestContext(request))
 
 

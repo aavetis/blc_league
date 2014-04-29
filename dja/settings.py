@@ -48,6 +48,8 @@ INSTALLED_APPS = (
     'league',
     'south',
     'news',
+
+    'pybb',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -99,7 +101,18 @@ TEMPLATE_CONTEXT_PROCESSORS =  (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
 
-    'news.context_processors.news_content',
+    'context_processors.news_content',
+    'context_processors.current_season',
+)
+
+
+#extra processors
+TEMPLATE_CONTEXT_PROCESSORS+=(
+    'pybb.context_processors.processor',
+)
+#extra middleware
+MIDDLEWARE_CLASSES+=(
+    'pybb.middleware.PybbMiddleware',
 )
 
 

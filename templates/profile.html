@@ -9,13 +9,41 @@
 <h2> {{ u.username }} </h2>
 {% if team %}
 <h4> <a href=" {% url 'team_page' team.id %} "> {{team}} </a></h4>
-	{% if user.username == u.username %}
-	<a class="small" href='/team/leave_team/'>Leave team</a>
+	{% if request.user.username == u.username %}
+	<a class="small" href='{% url 'leave_team' %}'>Leave team</a>
 	{% endif %}
 
 {% endif %}
 
-<h3> {{ u.player }} </h3>
+<!-- <h3> {{ u.player }} </h3> -->
+<div class="container col-lg-8 col-sm-7 col-md-8">
+
+<table class="table table-condensed">
+
+	<thead>Profile Info:</thead>
+
+	<tr>
+		<td><b>BLC Name:</b></td>
+		<td>{{u.player.blc_name}}</td>
+	</tr>
+
+	<tr>
+		<td><b>Favorite Champ:</b></td>
+		<td>{{u.player.fav_champ}}</td>
+	</tr>
+
+	<tr>
+		<td><b>Location:</b></td>
+		<td>{{u.player.location}}</td>
+	</tr>
+
+</table>
+
+</div>
+
+<div class="container col-lg-4 col-md-4 col-sm-4" style="background:#cecece; ">
+Recent Matches
+</div>
 
 
 {% endblock %}

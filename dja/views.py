@@ -5,6 +5,7 @@ from django.core.context_processors import csrf
 from django.contrib.auth.forms import UserCreationForm
 
 from league.forms import AccountForm
+from django.template import RequestContext
 
 
 def login(request):
@@ -26,7 +27,7 @@ def auth_view(request):
 
 	if user is not None:
 		auth.login(request, user)
-		return HttpResponseRedirect('/accounts/loggedin')
+		return HttpResponseRedirect('/')
 	else:
 		return HttpResponseRedirect('/accounts/invalid')
 
@@ -58,7 +59,7 @@ def register_user(request):
 
 	args['form'] = UserCreationForm()
 	#args['form'] = AccountForm()
-	return render(request, 'register.html', args)
+	return render(request, 'register.html', args, context_instance=RequestContext(request))
 
 def register_success(request):
 	return render(request, 'register_success.html')

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h2>Season {{ season.id }}</h2>
+
+<p>{{season.info}}</p>
+
+<table class="table">
+	<thead><b>Teams</b></thead>
+	{% for t in season.teams.all %}
+		<tr> 
+		<td><a href='{% url 'team_page' t.id %}'>{{t.name}}</a></td>
+		</tr>
+	{% endfor %}
+
+</table>
+
+
+{% endblock %}
