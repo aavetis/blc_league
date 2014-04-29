@@ -90,7 +90,6 @@ class Season(models.Model):
     def __unicode__(self):
         return "Season %d | Status: %s" %(self.id, self.status)
 
-
 """
 class Match(models.Model):
     STATUS = (
