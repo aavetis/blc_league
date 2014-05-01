@@ -8,9 +8,27 @@
 
 {% block content %} 
 
+<table class="table">
+	<h4>Recent Season {{ season.id }} Matches:</h4>
+	<h6>(just so u can see the matches easily)</h6>
+	<thead><tr>
+	<th>Home Team</th>
+	<th>Away Team</th>
+	<th>Result</th>
+	</tr>
+	</thead>
+	{% for m in season_sorted %}
+		<tr>
+		<td><a href="{% url 'team_page' m.home.id %}">{{m.home}}</a></td>
+		<td><a href="{% url 'team_page' m.away.id %}">{{m.away}}</a></td>
+		<td><a href="{% url 'match_page' m.id %}">{{m.get_status_display}}</a></td>
+		</tr>
+	{% endfor %}
+</table>
 
 
-
+<br /> <br />
+<h4>Team List</h4>
 <table class="">
 	{% for team in teams %}
 	<tr><h3><a href="{% url 'team_page' team.id %}">{{team.name}}</a></h3> Team active : {{team.is_active}}</tr>

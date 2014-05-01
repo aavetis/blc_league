@@ -37,6 +37,10 @@ urlpatterns = patterns('',
     url(r'^team/(?P<t_id>\D+)/$', 'league.views.team_page', name='team_page'),
     
 
+    url(r'^match/(?P<m_id>[0-9]+)/$', 'league.views.match_page', name="match_page"),
+    url(r'^match/match_report/$', 'league.views.match_report', name="match_report"),
+    
+
     url(r'^season/(?P<s_id>[0-9]+)/$', 'league.views.season_page', name='season_page'),
     
     url(r'^forum/', include('pybb.urls', namespace='pybb')),

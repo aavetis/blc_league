@@ -33,3 +33,15 @@ class LeaveTeamForm(forms.ModelForm):
 		model = Squad
 		fields = ()
 
+
+class MatchReportForm(forms.ModelForm):
+	class Meta:
+		model = Match
+		fields = (
+			'home_score', 'away_score',
+		)
+
+class MatchComm(forms.ModelForm):
+	class Meta:
+		model = MatchMessage
+		fields = ('message',)

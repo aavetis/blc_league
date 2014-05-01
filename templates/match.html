@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h3>Match Page</h3><br>
+
+<div class="col-lg-4 col-lg-offset-0 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-4 col-xs-offset-0">
+<b><a href="{% url 'team_page' match.home.id %}" class="text-danger">{{ match.home }}</a></b>
+<hr>
+	<ul class="list-unstyled">
+	{% for player in match.home.members.all %}
+	<li><a href="{% url 'user' player.id %}">{{ player.user }}</a></li>
+	{% endfor %}
+	</ul>
+
+</div>
+
+<div class="col-lg-2 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-2 col-xs-offset-1">
+<h3 class="text-center">vs.</h3>
+</div>
+
+
+<div class="col-lg-4 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-4 col-xs-offset-1 text-right">
+<b><a href="{% url 'team_page' match.away.id %}" class="text-danger">{{ match.away }}</a></b>
+<hr>
+	<ul class="list-unstyled">
+	{% for player in match.away.members.all %}
+	<li><a href="{% url 'user' player.id %}">{{ player.user }}</a></li>
+	{% endfor %}
+	</ul>
+
+</div>
+
+<div>
+<h4 class="text-center">Result:</h4>
+{% if match.get_status_display == "Pending" %}
+<h5 class="text-center">{{match.get_status_display}}</h5>
+{% else %}
+<h5 class="text-center">{{match.home_score}} - {{match.away_score}}</h5>
+<h5 class="text-center">{{match.get_status_display}}</h5>
+
+{% endif %}
+
+
+</div>
+
+<br><br>
+<div class="comments col-lg-8 col-lg-offset-2" style="margin-
+bottom:30px;">
+
+{% for message in messages.all %}
+	<div style="border-bottom:1px solid #cecece; padding:0%; font-weight:bold; " class="small"  >
+	{{message.sent_by}}
+		<div class="pull-right">
+		{{message.datetime|timesince}}
+		</div>
+
+	</div>
+	<p class="message-content" style=" margin-bottom:25px;   ">
+	{{message.message}}
+	</p>
+
+
+{% endfor %}
+
+</div>
+
+
+<p></p>
+
+{% if user.is_authenticated %}
+<div class="col-lg-8 col-lg-offset-2">
+<form action="{% url 'match_page' match.id %}" method="POST">{% csrf_token %}
+
+<table class="table">
+	<thead>Post Match Comment</thead>
+	<tr>
+	<td>
+	<textarea id="id_message" name="message" rows=10 style="width:100%;" ></textarea>
+	</td></tr>
+	<tr><td style="border-top:none;"><input type="submit" class="pull-right" /></td></tr>
+</table>
+</form>
+</div>
+{% endif %}
+
+{% endblock %}

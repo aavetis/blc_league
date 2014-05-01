@@ -9,7 +9,7 @@ from league.models import *
 from django.contrib.auth.models import User
 
 from django.contrib import auth
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 
 
@@ -195,5 +195,72 @@ def season_page(request, s_id):
     }
 
     return render(request, 'season.html', context, context_instance=RequestContext(request))
+
+
+def match_page(request, m_id):
+    match = get_object_or_404(Match, id=m_id)
+    context = {
+        'match' : match
+    }
+
+    context['messages'] = match.messages
+    #dont show comment form unless loggedin
+
+    context['form'] = MatchComm()
+    context.update(csrf(request))
+    if request.POST:
+        form = MatchComm(request.POST)
+        if form.is_valid():
+            f=form.save(commit=False)
+            f.sent_by = request.user
+            f.save()
+
+            context['match'].messages.add(f)
+
+            return HttpResponseRedirect('/match/'+str(match.id)) 
+
+
+    return render(request, 'match.html', context, context_instance=RequestContext(request))
+
+
+def match_report(request):
+    user = request.user
+
+    
+    try:
+        team = get_object_or_404(Team, members=user)
+        match = team.home_team.filter(status=1) | team.away_team.filter(status=1)
+        match = match[0]
+    except:
+        return HttpResponse("you dont have a match to report")
+
+    if request.POST:
+        form = MatchReportForm(request.POST, instance=match)
+
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.season = Season.objects.get(status='L')
+            f.home = team
+            f.away = match.away
+            f.save()
+
+
+            return HttpResponseRedirect('/match/'+str(match.id)) 
+    else:
+        form = MatchReportForm(request.POST, instance=match)
+    args = {}
+    args.update(csrf(request))
+    args['form'] = form
+    args['match'] = match
+    
+    return render(request, 'match_report.html', args, context_instance=RequestContext(request))
+    
+
+
+
+
+
+
+
 
 

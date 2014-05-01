@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="{% url 'match_report' %}" method="POST">{% csrf_token %}
+<table class="table">
+Home: {{match.home}}<br>
+Away: {{ match.away }} <br>
+{{ form.as_table}}
+</table>
+
+<input type='submit' value="Submit" />
+
+</form>
+
+
+{% endblock %}

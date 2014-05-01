@@ -103,6 +103,7 @@ TEMPLATE_CONTEXT_PROCESSORS =  (
 
     'context_processors.news_content',
     'context_processors.current_season',
+    'context_processors.match_info',
 )
 
 

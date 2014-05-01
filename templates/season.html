@@ -6,8 +6,31 @@
 
 <p>{{season.info}}</p>
 
+<div class="col-lg-8 col-md-8 col-sm-8">
 <table class="table">
-	<thead><b>Teams</b></thead>
+	<h4>Matches</h4>
+	<thead><tr>
+	<th>Home Team</th>
+	<th>Away Team</th>
+	<th>Result</th>
+	</tr>
+	</thead>
+	{% for m in season_sorted %}
+		<tr>
+		<td><a href="{% url 'team_page' m.home.id %}">{{m.home}}</a></td>
+		<td><a href="{% url 'team_page' m.away.id %}">{{m.away}}</a></td>
+		<td><a href="{% url 'match_page' m.id %}">{{m.get_status_display}}</a></td>
+		</tr>
+	{% endfor %}
+</table>
+</div>
+
+
+<div class="col-lg-3 col-lg-offset-1 col-md-3 col-sm-3">
+<table class="table">
+	<thead><tr>
+	<th>Participating Teams</th>
+	</tr></thead>
 	{% for t in season.teams.all %}
 		<tr> 
 		<td><a href='{% url 'team_page' t.id %}'>{{t.name}}</a></td>
@@ -15,6 +38,7 @@
 	{% endfor %}
 
 </table>
+</div>
 
 
 {% endblock %}

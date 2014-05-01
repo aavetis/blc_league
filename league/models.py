@@ -50,6 +50,7 @@ class Team(models.Model):
     members = models.ManyToManyField(Player, through='Squad')
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
 
+
     def __unicode__(self):
         return self.name
     
@@ -82,6 +83,7 @@ class Season(models.Model):
         ('L', 'Live'),
         ('C', 'Closed')
     )
+
     teams  = models.ManyToManyField(Team, related_name="teamlist")
     status = models.CharField(max_length=1, default=STATUS[0][0], choices=STATUS)
 
@@ -90,7 +92,7 @@ class Season(models.Model):
     def __unicode__(self):
         return "Season %d | Status: %s" %(self.id, self.status)
 
-"""
+
 class Match(models.Model):
     STATUS = (
         ('1', 'Pending'),
@@ -98,20 +100,27 @@ class Match(models.Model):
         ('3', 'AWAY WIN'),
     )
 
+    season = models.ForeignKey(Season, related_name='matches')
     home = models.ForeignKey(Team, related_name='home_team')
-    home_score = models.PositiveSmallIntegerField(blank=True)
+    home_score = models.PositiveSmallIntegerField(blank=True, null=True)
     away = models.ForeignKey(Team, related_name='away_team')
-    away_score = models.PositiveSmallIntegerField(blank=True)
+    away_score = models.PositiveSmallIntegerField(blank=True, null=True)
     status = models.CharField(max_length=1, default=STATUS[0][0], choices=STATUS)
 
-    messages = models.ManyToManyField(MatchMessage, blank=True)
+    messages = models.ManyToManyField('MatchMessage', blank=True)
+
+    def __unicode__(self):
+        if (self.status != 1):
+            return "%s vs. %s | RESULT: %s" %(self.home.name, self.away.name, self.get_status_display())
+        else:
+            return "%s vs. %s" %(self.home.name, self.away.name)
+       
+
 
 
 class MatchMessage(models.Model):
     sent_by = models.ForeignKey(User)
     message = models.TextField()
     datetime = models.DateTimeField(auto_now_add=True)
-    match = models.ManyToManyField(Match)
 
 
-"""
