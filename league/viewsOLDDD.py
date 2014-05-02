@@ -40,63 +40,77 @@ def home(request):
     #return render(request, 'home.html', context)
     return render(request, 'home.html', context, context_instance=RequestContext(request))
 
-@login_required
-def join_team(request):        
-    pl = Player.objects.get(user=request.user)
-    if Squad.objects.filter(player=pl):
-        return HttpResponseRedirect('/')
 
-    if request.POST:
-        form = TeamForm(request.POST)
-        if form.is_valid():
-            u = request.user
-            uid = u.id
-            team =Team.objects.get(id=request.POST['team'])
-            
-            password = request.POST['pw']
-            f = form.save(commit=False)
-            f.player = pl
-
-            if password == Team.objects.get(id=request.POST['team']).password:
-                f.save()
-                team.checkPlayers()
-                #team.save
-            else:
-                return HttpResponseRedirect('/')                    
-            
-
-
-            return HttpResponseRedirect('/user/'+str(request.user.id))
-    else:
-        form = TeamForm()
-    args = {}
-    args.update(csrf(request))
-
-    args['form'] = form
-
-    return render(request, 'join_team.html', args, context_instance=RequestContext(request))
-
-
-@login_required
-def make_team(request):
-    pl = Player.objects.get(user=request.user)
-
-    if request.POST:
-        form = MakeTeamForm(request.POST)
-        if form.is_valid():
-            form.save()
+def join_team(request):
+    if request.user.is_authenticated():
+        
+        pl = Player.objects.get(user=request.user)
+        if Squad.objects.filter(player=pl):
             return HttpResponseRedirect('/')
+
+        if request.POST:
+            form = TeamForm(request.POST)
+            if form.is_valid():
+                u = request.user
+                uid = u.id
+                team =Team.objects.get(id=request.POST['team'])
+                
+                password = request.POST['pw']
+                f = form.save(commit=False)
+                f.player = pl
+
+                if password == Team.objects.get(id=request.POST['team']).password:
+                    f.save()
+                    team.checkPlayers()
+                    #team.save
+                else:
+                    return HttpResponseRedirect('/')                    
+                
+
+
+                return HttpResponseRedirect('/user/'+str(request.user.id))
+        else:
+            form = TeamForm()
+        args = {}
+        args.update(csrf(request))
+
+        args['form'] = form
+
+        return render(request, 'join_team.html', args, context_instance=RequestContext(request))
     else:
-        form = MakeTeamForm()
-    args = {}
-    args.update(csrf(request))
-    args['form'] = form
+         return HttpResponseRedirect('/accounts/login/')
 
-    return render(request, 'make_team.html', args, context_instance=RequestContext(request))
 
+def make_team(request):
+    if request.user.is_authenticated():
+        pl = Player.objects.get(user=request.user)
+
+        if request.POST:
+            form = MakeTeamForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/')
+        else:
+            form = MakeTeamForm()
+        args = {}
+        args.update(csrf(request))
+        args['form'] = form
+
+
+        return render(request, 'make_team.html', args, context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/accounts/login/')
 
 
 def team_page(request, t_id):
+    """
+    try:
+        team = get_object_or_404(Team, name=t_id)
+        #team= Team.objects.get(name=t_id)
+    except Team.DoesNotExist:
+        team = get_object_or_404(Team, id=t_id)        
+    """
+
     try:
         if Team.objects.get(name__iexact=t_id):
             team = Team.objects.get(name__iexact=t_id)
@@ -134,46 +148,51 @@ def user(request, u_id):
         context['user_matches'] = user_matches
     return render(request, 'profile.html', context, context_instance=RequestContext(request) )
 
-@login_required
+
 def edit_profile(request):
-    user = request.user
-    pl = Player.objects.get(user=request.user)
+    if request.user.is_authenticated():
+        user = request.user
+        pl = Player.objects.get(user=request.user)
 
-    if request.POST:
-        form = EditProfileForm(request.POST, instance=pl)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/')
-    else:
-        form = EditProfileForm(instance=pl)
-    args = {}
-    args.update(csrf(request))
-    args['form'] = form
-
-    return render(request, 'edit.html', args, context_instance=RequestContext(request))
-
-@login_required
-def leave_team(request):
-    user = request.user
-    pl = Player.objects.get(user=request.user)
+        if request.POST:
+            form = EditProfileForm(request.POST, instance=pl)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/')
+        else:
+            form = EditProfileForm(instance=pl)
+        args = {}
+        args.update(csrf(request))
+        args['form'] = form
     
-    squad = get_object_or_404(Squad, player=pl)
-    team = squad.team
-
-    if request.POST:
-        form = LeaveTeamForm(request.POST, instance=squad)
-        if form.is_valid():
-            squad.delete()
-            team.checkPlayers()
-            return HttpResponseRedirect('/')
+        return render(request, 'edit.html', args, context_instance=RequestContext(request))
     else:
-        form = LeaveTeamForm(instance=squad)
-    args = {}
-    args.update(csrf(request))
-    args['form'] = form
+        return HttpResponseRedirect('/accounts/login/')
 
-    return render(request, 'leave_team.html', args, context_instance=RequestContext(request))
 
+def leave_team(request):
+    if request.user.is_authenticated():
+        user = request.user
+        pl = Player.objects.get(user=request.user)
+        
+        squad = get_object_or_404(Squad, player=pl)
+        team = squad.team
+
+        if request.POST:
+            form = LeaveTeamForm(request.POST, instance=squad)
+            if form.is_valid():
+                squad.delete()
+                team.checkPlayers()
+                return HttpResponseRedirect('/')
+        else:
+            form = LeaveTeamForm(instance=squad)
+        args = {}
+        args.update(csrf(request))
+        args['form'] = form
+    
+        return render(request, 'leave_team.html', args, context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/')
 
 def season_page(request, s_id):
     season = get_object_or_404(Season, id=s_id)
@@ -208,9 +227,10 @@ def match_page(request, m_id):
 
     return render(request, 'match.html', context, context_instance=RequestContext(request))
 
-@login_required
 def match_report(request):
     user = request.user
+
+    
     try:
         team = get_object_or_404(Team, members=user)
         match = team.home_team.filter(status=1) | team.away_team.filter(status=1)
@@ -237,6 +257,40 @@ def match_report(request):
     
     return render(request, 'match_report.html', args, context_instance=RequestContext(request))
     
+"""
+def join_season(request):
+    if request.user.is_authenticated():
+        user = request.user
+        pl = Player.objects.get(user=request.user)
+        squad = get_object_or_404(Squad, player=pl)
+        team = squad.team
+
+        season = get_object_or_404(Season, status='L')
+
+        if team in season.teams.all():
+            return HttpResponseRedirect("/season/"+str(season.id))
+
+        if request.POST:
+            if team.is_active:
+                form = JoinSeasonForm(request.POST, instance=season)
+
+                if form.is_valid():                    
+                    season.teams.add(team)
+                    form.save()
+                    season.save()
+                    #return HttpResponse("joined season")
+                    return HttpResponseRedirect("/season/"+str(season.id))
+            else:
+                return HttpResponseRedirect("/")
+        else:
+            form = JoinSeasonForm(request.POST, instance=season)
+        args = {}
+        args.update(csrf(request))
+        args['form'] = form
+        return render(request, 'join_season.html', args, context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect("/accounts/login")
+"""
 
 @login_required
 def join_season(request):
