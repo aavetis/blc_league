@@ -4,6 +4,10 @@
 {% block content %}
 <h2>Season {{ season.id }}</h2>
 
+<p><a href="{% url 'join_season' %}" style="color:#fff;">
+<span class="label label-danger">JOIN SEASON</span>
+</a></p>
+
 <p>{{season.info}}</p>
 
 <div class="col-lg-8 col-md-8 col-sm-8">

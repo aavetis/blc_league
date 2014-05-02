@@ -45,3 +45,12 @@ class MatchComm(forms.ModelForm):
 	class Meta:
 		model = MatchMessage
 		fields = ('message',)
+
+class JoinSeasonForm(forms.ModelForm):
+	class Meta:
+		model = Season
+		fields = ()
+
+
+
+		

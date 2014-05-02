@@ -198,7 +198,6 @@ def season_page(request, s_id):
 
     return render(request, 'season.html', context, context_instance=RequestContext(request))
 
-
 def match_page(request, m_id):
     current_match = get_object_or_404(Match, id=m_id)
     context = {
@@ -223,7 +222,6 @@ def match_page(request, m_id):
 
 
     return render(request, 'match.html', context, context_instance=RequestContext(request))
-
 
 def match_report(request):
     user = request.user
@@ -255,6 +253,37 @@ def match_report(request):
     
     return render(request, 'match_report.html', args, context_instance=RequestContext(request))
     
+
+def join_season(request):
+    if request.user.is_authenticated():
+        user = request.user
+        pl = Player.objects.get(user=request.user)
+        squad = get_object_or_404(Squad, player=pl)
+        team = squad.team
+
+        season = get_object_or_404(Season, status='L')
+
+        if team in season.teams.all():
+            return HttpResponseRedirect("/season/"+str(season.id))
+
+        if request.POST:
+            if team.is_active:
+                form = JoinSeasonForm(request.POST, instance=season)
+
+                if form.is_valid():                    
+                    season.teams.add(team)
+                    form.save()
+                    season.save()
+                    #return HttpResponse("joined season")
+                    return HttpResponseRedirect("/season/"+str(season.id))
+            else:
+                return HttpResponseRedirect("/")
+        else:
+            form = JoinSeasonForm(request.POST, instance=season)
+        args = {}
+        args.update(csrf(request))
+        args['form'] = form
+        return render(request, 'join_season.html', args, context_instance=RequestContext(request))
 
 
 

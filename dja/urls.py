@@ -42,7 +42,9 @@ urlpatterns = patterns('',
     
 
     url(r'^season/(?P<s_id>[0-9]+)/$', 'league.views.season_page', name='season_page'),
-    
+    url(r'^join_season/$', 'league.views.join_season', name='join_season'),
+
+
     url(r'^forum/', include('pybb.urls', namespace='pybb')),
 
 
