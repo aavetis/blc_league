@@ -114,7 +114,7 @@ class Match(models.Model):
             return "%s vs. %s | RESULT: %s" %(self.home.name, self.away.name, self.get_status_display())
         else:
             return "%s vs. %s" %(self.home.name, self.away.name)
-       
+
 
 
 
@@ -122,5 +122,9 @@ class MatchMessage(models.Model):
     sent_by = models.ForeignKey(User)
     message = models.TextField()
     datetime = models.DateTimeField(auto_now_add=True)
+
+
+    def __unicode__(self):
+        return "%s : %s" %(self.sent_by, self.message)
 
 

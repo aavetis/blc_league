@@ -140,6 +140,8 @@ def user(request, u_id):
     if s:
         context['team'] = s.team
 
+        user_matches = Match.objects.filter(home=s.team) | Match.objects.filter(away=s.team)
+        context['user_matches'] = user_matches
     return render(request, 'profile.html', context, context_instance=RequestContext(request) )
 
 
@@ -198,12 +200,12 @@ def season_page(request, s_id):
 
 
 def match_page(request, m_id):
-    match = get_object_or_404(Match, id=m_id)
+    current_match = get_object_or_404(Match, id=m_id)
     context = {
-        'match' : match
+        'current_match' : current_match
     }
 
-    context['messages'] = match.messages
+    context['messages'] = current_match.messages
     #dont show comment form unless loggedin
 
     context['form'] = MatchComm()
@@ -215,9 +217,9 @@ def match_page(request, m_id):
             f.sent_by = request.user
             f.save()
 
-            context['match'].messages.add(f)
+            context['current_match'].messages.add(f)
 
-            return HttpResponseRedirect('/match/'+str(match.id)) 
+            return HttpResponseRedirect('/match/'+str(current_match.id)) 
 
 
     return render(request, 'match.html', context, context_instance=RequestContext(request))
@@ -240,11 +242,9 @@ def match_report(request):
         if form.is_valid():
             f = form.save(commit=False)
             f.season = Season.objects.get(status='L')
-            f.home = team
+            f.home = match.home
             f.away = match.away
             f.save()
-
-
             return HttpResponseRedirect('/match/'+str(match.id)) 
     else:
         form = MatchReportForm(request.POST, instance=match)

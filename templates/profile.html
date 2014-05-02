@@ -42,7 +42,25 @@
 </div>
 
 <div class="container col-lg-4 col-md-4 col-sm-4" style="background:#cecece; ">
+
 Recent Matches
+<br>
+{% for m in user_matches %}
+<a href="{% url 'match_page' m.id %}">
+	{% if m.status = '2' %}
+	<strong>
+	{% endif %}
+	{{m.home}}
+	</strong>
+	 vs. 
+	{% if m.status = '3' %}
+	<strong> {% endif %}
+
+	{{m.away}}
+	</strong>
+</a>
+{% endfor %}
+
 </div>
 
 
