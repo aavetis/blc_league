@@ -15,6 +15,8 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 
+import auto_update as auto_update
+
 
 
 from forms import *
@@ -232,6 +234,8 @@ def match_report(request):
             f.home = match.home
             f.away = match.away
             f.save()
+
+            auto_update.update(f)
             return HttpResponseRedirect('/match/'+str(match.id)) 
     else:
         form = MatchReportForm(request.POST, instance=match)
