@@ -4,6 +4,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'dja.settings'
 
 from league.models import *
 
+
 print "checking matches"
 matches = Match.objects.all()
 

@@ -107,9 +107,14 @@ def team_page(request, t_id):
         team = get_object_or_404(Team, id=t_id)
 
     members = team.members
+    
+
+
+    team_matches = team.home_team.all() | team.away_team.all()
     context = {
         'team' : team,
-        'members' : members
+        'members' : members,
+        'team_matches' : team_matches,
     }
 
     return render(request, 'team.html', context, context_instance=RequestContext(request) )
@@ -255,6 +260,9 @@ def join_season(request):
 
     if team in season.teams.all():
         return HttpResponseRedirect("/season/"+str(season.id))
+
+    if len(team.members.all()) < 3:
+        return HttpResponse("not enough players, team not active")
 
     if request.POST:
         if team.is_active:

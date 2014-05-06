@@ -8,6 +8,7 @@
 
 <h2> {{ team.name }} </h2>
 
+
 <p> {{ team.bio }} </p>
 
 <div class='row'>
@@ -20,5 +21,30 @@
 {% endfor %}
 </div>
 </div>
+
+
+
+<br><br>
+
+<div style="background:#cecece;">
+
+{% for m in team_matches %}
+<a href="{% url 'match_page' m.id %}">
+	{% if m.status = '2' %}
+	<strong>
+	{% endif %}
+	{{m.home}}
+	</strong>
+	 vs. 
+	{% if m.status = '3' %}
+	<strong> {% endif %}
+
+	{{m.away}}
+	</strong>
+</a>
+<br>
+{% endfor %}
+</div>
+
 
 {% endblock %}

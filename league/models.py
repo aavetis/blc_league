@@ -102,9 +102,9 @@ class Match(models.Model):
 
     season = models.ForeignKey(Season, related_name='matches')
     home = models.ForeignKey(Team, related_name='home_team')
-    home_score = models.PositiveSmallIntegerField(blank=True, null=True)
+    home_score = models.PositiveSmallIntegerField(default=0)
     away = models.ForeignKey(Team, related_name='away_team')
-    away_score = models.PositiveSmallIntegerField(blank=True, null=True)
+    away_score = models.PositiveSmallIntegerField(default=0)
     status = models.CharField(max_length=1, default=STATUS[0][0], choices=STATUS)
 
     messages = models.ManyToManyField('MatchMessage', blank=True)
