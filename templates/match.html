@@ -52,13 +52,14 @@ bottom:30px;">
 
 {% for message in messages.all %}
 	<div style="border-bottom:1px solid #cecece; padding:0%; font-weight:bold; " class="small"  >
-	{{message.sent_by}}
+	<a href="{% url 'user' message.sent_by.id %}">{{message.sent_by}}</a>
 		<div class="pull-right">
-		{{message.datetime|timesince}}
+		{{message.datetime|date:"SHORT_DATE_FORMAT"}}
+		{{message.datetime|time:"TIME_FORMAT"}}
 		</div>
 
 	</div>
-	<p class="message-content" style=" margin-bottom:25px;   ">
+	<p class="message-content" style=" margin-bottom:25px; ">
 	{{message.message}}
 	</p>
 
@@ -80,7 +81,7 @@ bottom:30px;">
 	<td>
 	<textarea id="id_message" name="message" rows=10 style="width:100%;" ></textarea>
 	</td></tr>
-	<tr><td style="border-top:none;"><input type="submit" class="pull-right" /></td></tr>
+	<tr><td style="border-top:none;"><input type="submit" class="btn btn-primary pull-right" /></td></tr>
 </table>
 </form>
 </div>

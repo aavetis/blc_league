@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['*']
 ########
 
 
-
+SITE_ID = 2
 # Application definition
 
 INSTALLED_APPS = (
@@ -43,13 +43,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.comments',
+    'django.contrib.sites',
 
+    'league', 'south', 'pybb', 'news', 
 
-    'league',
-    'south',
-    'news',
-
-    'pybb',
 )
 
 MIDDLEWARE_CLASSES = (

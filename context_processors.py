@@ -1,10 +1,16 @@
 from news.models import *
 from league.models import *
+from pybb.models import *
+
+from pybb.views import *
 
 
 def news_content(request):
 	c = {}
 	c['newspost'] = NewsPost.objects.all().order_by('-id')[:5]
+
+	#c['forumposts'] = Post.objects.order_by('-created')[:10]
+	c['forumposts'] = Topic.objects.order_by('-updated')[:10]
 	return c
 
 def current_season(request):

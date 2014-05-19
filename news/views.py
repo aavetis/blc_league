@@ -9,7 +9,7 @@ from django.core.context_processors import csrf
 
 
 # Create your views here.
-def post(request, post_id):
+def news_post(request, post_id):
 	post = get_object_or_404(NewsPost, id=post_id)
 	context = {
 		'post' : post,

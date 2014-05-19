@@ -114,11 +114,11 @@ $(".alert").alert();
 
 
     <div class="col-lg-3 col-md-3" >
-        <div class="panel-group" id="accordion">
+
       <div class="panel panel-default">
 
       <div class="panel-heading">
-      <a data-toggle="collapse" data-parent="#accordion" href="#season">
+      <a href="{% url 'season_page' season.id %}">
       <h5 style="margin:.5%;">Season</h5></a></div>
             <div id="season" class="panel-collapse collapse in">
         <div class="panel-body small">
@@ -132,19 +132,30 @@ $(".alert").alert();
 
 
       <div class="panel-heading">
-        <a data-toggle="collapse" data-parent="#accordion" href="#forumlist">
+        <a href="{% url 'pybb:index'  %}">
         <h5 style="margin:.5%;">Forums</h5></a></div>
 
         <div id="forumlist" class="panel-collapse collapse in">
           <div class="panel-body small">
             <ul class="list-unstyled">
             {% for post in newspost %}
-                <li><span class="glyphicon glyphicon-exclamation-sign" style="color:red;"></span> <a href="{% url 'post' post.id %}">{{ post.title|truncatechars:35 }}</a></li>
+                <li><span class="glyphicon glyphicon-exclamation-sign" style="color:red;"></span> <a href="{% url 'news_post' post.id %}">{{ post.title|truncatechars:35}}</a></li>
             {% endfor %}
+
+
+            {% for fp in forumposts %}
+            <li>
+            <span class="glyphicon glyphicon-user" style="color:#cecece;"></span>
+            <a href="{% url 'pybb:post' fp.id  %}">
+            <!-- {{fp.summary|striptags|truncatechars:35}} -->
+            {{fp.name|striptags|truncatechars:35}}
+            </a>
+            </li>
+            {% endfor %}
+
             </ul>
           </div>
         </div>
-      </div>
     </div>
 
 

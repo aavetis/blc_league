@@ -11,11 +11,6 @@ current_season = Season.objects.get(status = 'L')
 
 
 l = list(teams)
-#l.remove()
-#del l[2]
-print "deleted****"
-
-
 
 for TWO_MATCHES_PER_WEEK in range(0,2):	
 	print "Week 1.%d" %TWO_MATCHES_PER_WEEK
