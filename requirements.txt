@@ -14,4 +14,4 @@ static==1.0.2
 wsgiref==0.1.2
 
 
-git+git://github.com/zekone/pybbm.git
+git+https://github.com/zekone/pybbm.git
