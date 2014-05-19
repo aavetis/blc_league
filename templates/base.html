@@ -146,7 +146,7 @@ $(".alert").alert();
             {% for fp in forumposts %}
             <li>
             <span class="glyphicon glyphicon-user" style="color:#cecece;"></span>
-            <a href="{% url 'pybb:post' fp.id  %}">
+            <a href="{% url 'pybb:topic' fp.id  %}">
             <!-- {{fp.summary|striptags|truncatechars:35}} -->
             {{fp.name|striptags|truncatechars:35}}
             </a>
