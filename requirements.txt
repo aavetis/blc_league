@@ -14,4 +14,5 @@ static==1.0.2
 wsgiref==0.1.2
 
 
-git+https://github.com/zekone/pybbm.git
+git+git://github.com/zekone/django_pybb.git
+
