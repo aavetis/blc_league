@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from django.contrib.auth.models import Group
 
 from django.contrib import auth
 
@@ -27,17 +28,13 @@ class Player(models.Model):
 
     def on_team(self):
         return Squad.objects.get(player=self).team
-    """
-    class Meta:
-        permissions = (
-            ('can_')
-        )
-    """
+
 
 @receiver(post_save, sender=User)
 def create_player(sender, instance, created, **kwargs):
     if created:
         Player.objects.create(user=instance)
+        instance.groups.add(Group.objects.get(name='def_user'))
         #give permissions when player created#
         #instance.
 
