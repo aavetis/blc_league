@@ -15,6 +15,8 @@ l = list(teams)
 for TWO_MATCHES_PER_WEEK in range(0,2):	
 	print "Week 1.%d" %TWO_MATCHES_PER_WEEK
 	random.shuffle(l)
+	random.shuffle(l)
+	random.shuffle(l)
 	print l
 	
 

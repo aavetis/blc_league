@@ -141,6 +141,16 @@ def user(request, u_id):
         context['user_matches'] = user_matches
     return render(request, 'profile.html', context, context_instance=RequestContext(request) )
 
+
+def team_list(request):
+    #list teams
+    teams = Team.objects.all()
+    context = {
+        'teams' : teams
+    }
+    return render(request, 'team_list.html', context, context_instance=RequestContext(request))
+
+
 @login_required
 def edit_profile(request):
     user = request.user

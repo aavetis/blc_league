@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="legend pager">
+  <span class="glyphicon glyphicon-ok btn-success"></span> = Active
+  <br>
+  <span class="glyphicon glyphicon-ok btn-primary"></span> = In Season
+  </div>
+<div  style='width:40%; margin: 0 auto;'>
+<table class="table table-condensed " >
+{% for t in teams %}
+<tr><td style="text-align:right;">
+{% if t.is_active %}
+  <span class="glyphicon glyphicon-ok btn-success"></span>
+{% endif %}
+{% if t in season.teams.all %}
+  <span class="glyphicon glyphicon-ok btn-primary"></span>
+{% endif %}
+</td>
+<td>
+{{ t.name }}
+</td></tr>
+{% endfor %}
+</table>
+</div>
+
+{% endblock %}

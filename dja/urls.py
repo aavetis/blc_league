@@ -35,7 +35,7 @@ urlpatterns = patterns('',
     url(r'^team/join_team/$', 'league.views.join_team', name="join_team"),
     url(r'^team/(?P<t_id>[0-9]+)/$', 'league.views.team_page', name='team_page'),    
     url(r'^team/(?P<t_id>\D+)/$', 'league.views.team_page', name='team_page'),
-    
+    url(r'^teams/$', 'league.views.team_list', name='team_list'),
 
     url(r'^match/(?P<m_id>[0-9]+)/$', 'league.views.match_page', name="match_page"),
     url(r'^match/match_report/$', 'league.views.match_report', name="match_report"),
