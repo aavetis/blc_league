@@ -11,8 +11,7 @@ current_season = Season.objects.get(status = 'L')
 
 #
 #
-#
-#
+
 
 l = list(teams)
 
